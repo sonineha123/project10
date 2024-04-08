@@ -37,18 +37,18 @@ public class FrontCtl extends HandlerInterceptorAdapter {
 		
 		
 		
-		/* HttpSession session = request.getSession(); */
+		 HttpSession session = request.getSession(); 
 		String path = request.getServletPath();
 		
 		System.out.println(" Front Ctl Called " + path);
-		/*
-		 * System.out.println(" Session ID " + session.getId());
-		 * System.out.println("Usercontext " + session.getAttribute("`"));
-		 */
+		
+		  System.out.println(" Session ID " + session.getId());
+		  System.out.println("Usercontext " + session.getAttribute("`"));
+		 
 
-		/*if (!path.startsWith("/Auth/")) {
+		if (!path.startsWith("/Auth/")) {
 			System.out.println("inside if condition");
-			//System.out.println(session.getAttribute("test")+"-------test____");
+			System.out.println(session.getAttribute("test")+"-------test____");
 			if(session.getId()==null) {
 				
 				System.out.println("inside if usercontext null");
@@ -79,10 +79,10 @@ public class FrontCtl extends HandlerInterceptorAdapter {
 	}
 
 	
-*/
+
 		boolean pass= false;
 		if (!path.startsWith("/Auth/")) {
-		//	System.out.println("inside if condition");
+			System.out.println("inside if condition");
 			
 		
 		System.out.println("JWTRequestFilter run success");
@@ -90,7 +90,7 @@ public class FrontCtl extends HandlerInterceptorAdapter {
 		System.out.println(requestTokenHeader+"]]]]]]]]]]---------------");
 		String username = null;
 		String jwtToken = null;
-		// JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
+		JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 			System.out.println("Inside token != null");
 			jwtToken = requestTokenHeader.substring(7);
@@ -107,20 +107,20 @@ public class FrontCtl extends HandlerInterceptorAdapter {
 			
 		}
 
-		//Once we get the token validate it.
+		Once we get the token validate it.
 		if (username != null ) {
 			System.out.println("inside user != null");
 			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
-			// if token is valid configure Spring Security to manually set authentication
+			if token is valid configure Spring Security to manually set authentication
 			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 
 				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				usernamePasswordAuthenticationToken
 						.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				// After setting the Authentication in the context, we specify
-				// that the current user is authenticated. So it passes the Spring Security Configurations successfully.
+				 After setting the Authentication in the context, we specify
+				 that the current user is authenticated. So it passes the Spring Security Configurations successfully.
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
 			pass = true;
